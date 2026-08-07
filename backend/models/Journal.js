@@ -16,6 +16,10 @@ const journalSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    aiAnalysis: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

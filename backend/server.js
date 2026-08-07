@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
+// Gemini AI integration active (@google/genai)
 import journalRoutes from "./routes/journalRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 
 dotenv.config();
 
@@ -24,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/journals", journalRoutes);
+app.use("/api/ai", aiRoutes);
 
 mongoose
   .connect(MONGO_URI)
