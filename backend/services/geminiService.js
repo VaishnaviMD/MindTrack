@@ -18,6 +18,16 @@ function getAIClient() {
   return new GoogleGenAI({ apiKey });
 }
 
+const MODEL_NAME = "gemini-3.6-flash";
+
+function parseJsonResponse(rawText) {
+  const cleaned = rawText
+    .replace(/^```(?:json)?\n?/i, "")
+    .replace(/\n?```$/i, "")
+    .trim();
+  return JSON.parse(cleaned);
+}
+
 /**
  * Analyzes a single mood entry and returns immediate feedback
  */
@@ -45,12 +55,10 @@ Only return valid JSON, no markdown, no extra text.`;
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: MODEL_NAME,
       contents: prompt,
     });
-    const text = response.text.trim();
-    const cleaned = text.replace(/^```json\n?/, "").replace(/\n?```$/, "").trim();
-    return JSON.parse(cleaned);
+    return parseJsonResponse(response.text.trim());
   } catch (error) {
     console.error("Gemini analyzeEntry error:", error);
     throw new Error(error.message || String(error));
@@ -108,12 +116,10 @@ Only return valid JSON, no markdown, no extra text.`;
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: MODEL_NAME,
       contents: prompt,
     });
-    const text = response.text.trim();
-    const cleaned = text.replace(/^```json\n?/, "").replace(/\n?```$/, "").trim();
-    return JSON.parse(cleaned);
+    return parseJsonResponse(response.text.trim());
   } catch (error) {
     console.error("Gemini analyzeMoodHistory error:", error);
     throw new Error(error.message || String(error));
@@ -147,7 +153,7 @@ Please respond in a warm, conversational, and helpful way. Use their mood histor
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: MODEL_NAME,
       contents: prompt,
     });
     return response.text.trim();

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-// Gemini AI integration active (@google/genai)
+// Gemini AI integration active (@google/genai) - updated
 import journalRoutes from "./routes/journalRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 

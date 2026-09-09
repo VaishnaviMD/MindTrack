@@ -18,6 +18,13 @@ function handleAIError(error, res) {
     });
   }
 
+  if (errMsg.includes("503") || errMsg.includes("high demand") || errMsg.includes("UNAVAILABLE")) {
+    return res.status(503).json({
+      message: "⏳ Gemini 3.8 Flash is currently experiencing high demand. Please retry in a few moments.",
+      isUnavailable: true,
+    });
+  }
+
   if (errMsg.includes("429") || errMsg.includes("quota") || errMsg.includes("exceeded")) {
     return res.status(429).json({
       message: "⚠️ Gemini API Quota Exceeded. You have hit the rate limit for this API key. Please try again in a few minutes or use a new key from Google AI Studio (https://aistudio.google.com).",
@@ -25,10 +32,17 @@ function handleAIError(error, res) {
     });
   }
 
-  if (errMsg.includes("API_KEY_INVALID") || errMsg.includes("API key not valid") || errMsg.includes("400")) {
+  if (errMsg.includes("API_KEY_INVALID") || errMsg.includes("API key not valid") || errMsg.includes("401") || errMsg.includes("UNAUTHENTICATED")) {
     return res.status(401).json({
       message: "🔑 Invalid Gemini API key. Please update GEMINI_API_KEY in backend/.env with a valid key from Google AI Studio (https://aistudio.google.com).",
       isKeyError: true,
+    });
+  }
+
+  if (errMsg.includes("400") || errMsg.includes("INVALID_ARGUMENT")) {
+    return res.status(400).json({
+      message: "Bad request sent to AI service.",
+      error: errMsg,
     });
   }
 
